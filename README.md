@@ -29,7 +29,7 @@ python NewKeyGen.py
 ```
 - Lalu masukkan HWID saat diminta:
 ```bash
-Masukkan HWID (hex 32 karakter): AE9EEB8ACEBAC3808006F786EAC2E159
+Masukkan HWID (hex 32 karakter): AE9EEB8ACEBAC3808006F786543210AJ
 ```
 - Outputnya akan menampilkan token jika berhasil ditemukan:
 ```bash
