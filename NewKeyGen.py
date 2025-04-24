@@ -1,7 +1,6 @@
 import requests
 import re
 import urllib3
-import time
 import pyperclip
 import msvcrt
 
@@ -23,24 +22,6 @@ def generate_token(hwid):
         'Content-Type': 'application/x-www-form-urlencoded',
     }
 
-    try:
-        session.get('https://62.146.236.10/', headers=headers_browser, verify=False)
-        print("1. Akses halaman awal berhasil.")
-    except requests.exceptions.RequestException as e:
-        print("Gagal akses halaman awal:", e)
-        return None
-
-    time.sleep(1)
-
-    try:
-        session.get('https://generatetoken.my.id/samarinda/TokenBelut.php', headers=headers_browser, verify=False)
-        print("2. Akses halaman form berhasil.")
-    except requests.exceptions.RequestException as e:
-        print("Gagal akses TokenBelut.php:", e)
-        return None
-
-    time.sleep(1)
-
     data = {
         'hwid': hwid,
         'generate_token': ''
@@ -53,35 +34,31 @@ def generate_token(hwid):
             headers=headers_browser,
             verify=False
         )
-        print("3. Simulasi submit HWID sukses. Response Status:", response.status_code)
     except requests.exceptions.RequestException as e:
-        print("Gagal submit HWID:", e)
+        print("Gagal submit Licensed Key:", e)
         return None
 
-    print("4. ==== Mencari token ====")
-
-    time.sleep(3)
+    print("==== Mencari token ====")
 
     match = re.search(r"html:\s*\"<p id='generated-token'>(.*?)</p>\"", response.text)
 
     if match:
         token = match.group(1)
-        print("5. Token ditemukan:", token)
+        print("Token ditemukan:", token)
         return token
     else:
-        print("5. Token tidak ditemukan dalam script JavaScript.")
+        print("Token tidak ditemukan.")
         return None
 
 if __name__ == "__main__":
-    hwid = input("Masukkan HWID (hex 32 karakter): ").strip()
+    hwid = input("Masukkan Licensed Key (hex 32 karakter): ").strip()
     token = generate_token(hwid)
     
     if token:
-        print("6. Token:", token)
         pyperclip.copy(token)
-        print("7. Token telah disalin ke clipboard.")
+        print("Token telah disalin ke clipboard.")
     else:
-        print("6. Token gagal didapatkan.")
+        print("Token gagal didapatkan.")
     
     print("Tekan sembarang tombol untuk keluar...")
     msvcrt.getch()
